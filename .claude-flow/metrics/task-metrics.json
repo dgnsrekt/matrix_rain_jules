@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cmd-init-1754499342176",
+    "type": "init",
+    "success": true,
+    "duration": 6464.719368,
+    "timestamp": 1754499348641,
+    "metadata": {}
+  },
+  {
+    "id": "cmd-sparc-1754499533856",
+    "type": "sparc",
+    "success": true,
+    "duration": 79396.885738,
+    "timestamp": 1754499613253,
+    "metadata": {}
+  },
+  {
+    "id": "cmd-sparc-1754499782320",
+    "type": "sparc",
+    "success": true,
+    "duration": 254038.07107499999,
+    "timestamp": 1754500036358,
+    "metadata": {}
+  }
+]
