@@ -107,6 +107,11 @@ function draw() {
 // Animation loop
 setInterval(draw, 33);
 
+// Handle click to reverse animation
+canvas.addEventListener('click', () => {
+    animationDirection *= -1;
+});
+
 // Handle window resize
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
