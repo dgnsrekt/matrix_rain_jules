@@ -39,6 +39,9 @@ for (let i = 0; i < columns; i++) {
     columnColors[i] = charmColors[Math.floor(Math.random() * charmColors.length)];
 }
 
+// Track animation direction (1 = normal, -1 = reverse)
+let animationDirection = 1;
+
 // Draw function
 function draw() {
     // Add dark background with opacity for fade effect
