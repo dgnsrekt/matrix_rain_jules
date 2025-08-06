@@ -83,13 +83,24 @@ function draw() {
             columnColors[i] = charmColors[Math.floor(Math.random() * charmColors.length)];
         }
         
-        // Reset drop to top when it reaches bottom
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
+        // Handle animation based on direction
+        if (animationDirection === 1) {
+            // Normal direction - falling down
+            // Reset drop to top when it reaches bottom
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            // Increment y position
+            drops[i]++;
+        } else {
+            // Reverse direction - going up
+            // Reset drop to bottom when it reaches top
+            if (drops[i] < -10 && Math.random() > 0.975) {
+                drops[i] = canvas.height / fontSize;
+            }
+            // Decrement y position
+            drops[i]--;
         }
-        
-        // Increment y position
-        drops[i]++;
     }
 }
 
