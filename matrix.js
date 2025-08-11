@@ -21,26 +21,53 @@ for (let i = 0; i < columns; i++) {
     drops[i] = Math.random() * -100;
 }
 
-// Charm-inspired color palette
-const charmColors = [
-    '#ff6b9d',  // Soft pink/coral
-    '#c66ef1',  // Lavender purple
-    '#7ee3f0',  // Soft cyan
-    '#a8e6cf',  // Mint green
-    '#ffd3b6',  // Peach
-    '#ffaaa5',  // Coral
-    '#b4a7d6',  // Soft purple
-    '#8fcaca',  // Teal
-];
+// --- Color Palettes ---
+const palettes = {
+    charm: [
+        '#ff6b9d', '#c66ef1', '#7ee3f0', '#a8e6cf',
+        '#ffd3b6', '#ffaaa5', '#b4a7d6', '#8fcaca',
+    ],
+    matrix: [
+        '#00ff41', '#00ff00', '#00e100', '#00c100',
+        '#00a100', '#008100'
+    ],
+    cyberpunk: [
+        '#ff00ff', '#00ffff', '#ffff00', '#ff0000',
+        '#00ff00', '#0000ff'
+    ],
+    pastel: [
+        '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1',
+        '#9b59b6', '#3498db', '#2ecc71', '#1abc9c'
+    ]
+};
+
+let currentPalette = palettes.charm;
 
 // Track color for each column
 const columnColors = [];
 for (let i = 0; i < columns; i++) {
-    columnColors[i] = charmColors[Math.floor(Math.random() * charmColors.length)];
+    columnColors[i] = currentPalette[Math.floor(Math.random() * currentPalette.length)];
 }
 
 // Track animation direction (1 = normal, -1 = reverse)
 let animationDirection = 1;
+
+// --- Functions ---
+
+function setPalette(paletteName) {
+    if (palettes[paletteName]) {
+        currentPalette = palettes[paletteName];
+        // Recolor existing columns
+        for (let i = 0; i < columns; i++) {
+            columnColors[i] = currentPalette[Math.floor(Math.random() * currentPalette.length)];
+        }
+        // Update active button style
+        document.querySelectorAll('#palette-switcher button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-palette="${paletteName}"]`).classList.add('active');
+    }
+}
 
 // Draw function
 function draw() {
@@ -53,24 +80,17 @@ function draw() {
     
     // Draw characters
     for (let i = 0; i < drops.length; i++) {
-        // Pick a random character
         const text = chars[Math.floor(Math.random() * chars.length)];
-        
-        // Calculate position
         const x = i * fontSize;
         const y = drops[i] * fontSize;
         
-        // Create gradient effect based on position
         const opacity = Math.min(1, (drops[i] * fontSize) / (canvas.height * 0.5));
         const color = columnColors[i];
         
-        // Apply color with varying opacity
         ctx.fillStyle = color + Math.floor(opacity * 255).toString(16).padStart(2, '0');
         ctx.fillText(text, x, y);
         
-        // Add bright glow effect for the leading character
         if (drops[i] > 0) {
-            // Leading character with glow
             ctx.shadowBlur = 10;
             ctx.shadowColor = color;
             ctx.fillStyle = '#ffffff';
@@ -78,31 +98,25 @@ function draw() {
             ctx.shadowBlur = 0;
         }
         
-        // Randomly change column color occasionally
         if (Math.random() > 0.995) {
-            columnColors[i] = charmColors[Math.floor(Math.random() * charmColors.length)];
+            columnColors[i] = currentPalette[Math.floor(Math.random() * currentPalette.length)];
         }
         
-        // Handle animation based on direction
         if (animationDirection === 1) {
-            // Normal direction - falling down
-            // Reset drop to top when it reaches bottom
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
             }
-            // Increment y position
             drops[i]++;
         } else {
-            // Reverse direction - going up
-            // Reset drop to bottom when it reaches top
             if (drops[i] < -10 && Math.random() > 0.975) {
                 drops[i] = canvas.height / fontSize;
             }
-            // Decrement y position
             drops[i]--;
         }
     }
 }
+
+// --- Event Listeners & Initialization ---
 
 // Animation loop
 setInterval(draw, 33);
@@ -117,14 +131,13 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Recalculate columns and drops
     const newColumns = canvas.width / fontSize;
     const newDrops = [];
     const newColors = [];
     
     for (let i = 0; i < newColumns; i++) {
         newDrops[i] = drops[i] || Math.random() * -100;
-        newColors[i] = columnColors[i] || charmColors[Math.floor(Math.random() * charmColors.length)];
+        newColors[i] = columnColors[i] || currentPalette[Math.floor(Math.random() * currentPalette.length)];
     }
     
     drops.length = 0;
@@ -132,3 +145,14 @@ window.addEventListener('resize', () => {
     columnColors.length = 0;
     columnColors.push(...newColors);
 });
+
+// Palette switcher buttons
+document.querySelectorAll('#palette-switcher button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const paletteName = e.target.getAttribute('data-palette');
+        setPalette(paletteName);
+    });
+});
+
+// Set initial active button
+document.querySelector('[data-palette="charm"]').classList.add('active');
