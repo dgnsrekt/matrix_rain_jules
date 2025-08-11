@@ -6,8 +6,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Matrix characters - mix of katakana, numbers, and symbols
-const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+-=[]{}|;:,.<>?';
-const chars = matrixChars.split('');
+const defaultMatrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+-=[]{}|;:,.<>?';
+let chars = defaultMatrixChars.split('');
 
 // Font size and columns
 const fontSize = 16;
@@ -156,3 +156,17 @@ document.querySelectorAll('#palette-switcher button').forEach(button => {
 
 // Set initial active button
 document.querySelector('[data-palette="charm"]').classList.add('active');
+
+// --- Character Set Customization ---
+const customCharsInput = document.getElementById('custom-chars-input');
+const customCharsBtn = document.getElementById('custom-chars-btn');
+
+customCharsBtn.addEventListener('click', () => {
+    const newChars = customCharsInput.value;
+    if (newChars) {
+        chars = newChars.split('');
+    } else {
+        chars = defaultMatrixChars.split('');
+    }
+    customCharsInput.value = ''; // Clear input after update
+});

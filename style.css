@@ -32,7 +32,7 @@ body {
     box-shadow: 0 0 15px rgba(126, 227, 240, 0.2);
 }
 
-#palette-switcher button {
+#palette-switcher button, #char-customizer button {
     background: transparent;
     border: 1px solid #7ee3f0;
     color: #7ee3f0;
@@ -43,7 +43,7 @@ body {
     transition: all 0.3s ease;
 }
 
-#palette-switcher button:hover {
+#palette-switcher button:hover, #char-customizer button:hover {
     background: #7ee3f0;
     color: #1a1a2e;
     box-shadow: 0 0 10px #7ee3f0;
@@ -53,4 +53,38 @@ body {
     background: #7ee3f0;
     color: #1a1a2e;
     font-weight: bold;
+}
+
+#char-customizer {
+    position: fixed;
+    top: 90px; /* Positioned below the palette switcher */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26, 26, 46, 0.8);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+    border: 1px solid rgba(126, 227, 240, 0.3);
+    box-shadow: 0 0 15px rgba(126, 227, 240, 0.2);
+}
+
+#custom-chars-input {
+    background: transparent;
+    border: 1px solid #7ee3f0;
+    color: #7ee3f0;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    border-radius: 4px;
+    width: 200px;
+}
+
+#custom-chars-input::placeholder {
+    color: rgba(126, 227, 240, 0.5);
+}
+
+#custom-chars-input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #7ee3f0;
 }
